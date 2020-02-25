@@ -1,26 +1,21 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from 'react'
+import {BrowserRouter as Router, Switch} from 'react-router-dom';
+import {Home, Movie} from "./pages";
+import {ScrolltoTop} from "./components"
+import PublicRoute from "./_route/PublicRoute";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+const App = () => {
 
-export default App;
+    return (
+        <Router>
+            <ScrolltoTop>
+                <Switch>
+                    <PublicRoute exact path="/" component={Home}/>
+                    <PublicRoute path="/movie" component={Movie}/>
+                </Switch>
+            </ScrolltoTop>
+        </Router>
+    );
+};
+
+export default App as any

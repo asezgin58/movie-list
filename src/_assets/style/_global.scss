@@ -1,0 +1,17 @@
+html {
+  font-family: $fontFamily;
+}
+
+body {
+  background-color: $bodyBgColor;
+  color: $bodyColor;
+  font-size: $fontSize;
+}
+
+#root {
+
+}
+
+.wrapper {
+  padding: 20px;
+}
