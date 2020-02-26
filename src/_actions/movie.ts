@@ -2,8 +2,23 @@ import {getAuthApiBaseUrl} from "../_helpers";
 
 const urlBase = () => getAuthApiBaseUrl();
 
-export const getMovies = async () => {
+export const getAllMovie = async () => {
 
-    const urlSuffix = '/';
-    const url: string = String(new URL(`${urlBase()}${urlSuffix}`));
+    let respResult: any = '';
+
+    const url: string = String(new URL(`${urlBase()}`));
+
+    await fetch(url)
+        .then(res => res.json())
+        .then(
+            (result) => {
+
+                respResult = result;
+            },
+            (error) => {
+                console.log("Error : ", error);
+            }
+        );
+
+    return await respResult;
 };

@@ -6,10 +6,15 @@ import ReactDOM from 'react-dom';
 import './_assets/style/main.scss';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import StoreProvider from './stateManagement/storeProvider';
 
 const app = <App/>;
 const container = (
-    <> {app} </>
+    <>
+        <StoreProvider>
+                      {app}
+        </StoreProvider>
+    </>
 );
 
 const documentContainer = document.getElementById('root');
