@@ -1,29 +1,27 @@
 import React, {useState} from 'react';
 import {context} from './context';
 import {IStore, IStoreStateDefaultValue} from './type';
-import {getAllMovie} from "../_actions/movie";
 
 const StoreProvider = (props: any) => {
 
     const [store, setStore] = useState<IStore>(IStoreStateDefaultValue);
 
-    const getMovies = async () => {
-        const resp: any = await getAllMovie();
-
-        setStore((prevState) => ({
+    const setStoreData = (data:any) => {
+        setStore(prevState => ({
             ...prevState,
-            movies: resp
-        }));
-    };
-
-    let valueObj: any = {
-        store,
-        getMovies
+            movies: {
+                ...store.movies,
+                ...data
+            }
+        }))
     };
 
     return (
         <>
-            <context.Provider value={valueObj}>
+            <context.Provider value={{
+                storeData: store,
+                setStore: (data:any) => setStoreData(data)
+            }}>
                 {props.children}
             </context.Provider>
         </>

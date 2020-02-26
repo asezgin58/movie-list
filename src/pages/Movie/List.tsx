@@ -1,27 +1,38 @@
-import React, {useContext, useEffect, useState} from 'react';
-import {Grid, Paper} from "@material-ui/core";
-import {context} from "../../stateManagement/context";
+import React, {useEffect, useState} from 'react';
+import {Box, Grid, Paper} from "@material-ui/core";
+import connect from "../../stateManagement/connect";
 import {IListState, IListStateDefaultValue, IProps} from "./type";
+import MUIDataTable from "mui-datatables";
+import {getAllMovie} from "../../_actions/movie";
 
 const List = (props: IProps) => {
 
-    const {store: {movies}, getMovies} = useContext(context);
-
+    const {moviesData, setMovies} = props;
     const [state, setState] = useState<IListState>(IListStateDefaultValue);
+
+    const {movies, count} = state;
+
+    const getMovies = async () => {
+        const moviesData: any = await getAllMovie();
+        setMovies(moviesData)
+    };
 
     useEffect(() => {
         getMovies();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+
     useEffect(() => {
-        if (movies) {
-            setState((prevState: IListState) => ({
-                ...prevState,
-                movieList: movies
-            }))
-        }
-    }, [movies]);
+        setState((prevState: IListState) => ({
+            ...prevState,
+            ...moviesData,
+            count: [moviesData].length
+        }))
+    }, [moviesData]);
+
+
+    console.log("State", state);
 
     return (
         <>
@@ -30,11 +41,38 @@ const List = (props: IProps) => {
                     <Paper className={"paper"}>Filter Area</Paper>
                 </Grid>
                 <Grid item xs={10}>
-                    <Paper className={"paper"}>item</Paper>
+                    <Box>
+                        <MUIDataTable
+                            title={"Movie List"}
+                            data={[movies]}
+                            columns={[
+                                {
+                                    name: "Title",
+                                    label: "Title",
+                                },
+                                {
+                                    name: "Year",
+                                    label: "Year",
+                                },
+                                {
+                                    name: "Genre",
+                                    label: "Genre",
+                                },
+                            ]}
+                            options={{
+                                selectableRows: 'none',
+                                filter: false,
+                                search: false,
+                                print: false,
+                                download: false,
+                                count: count
+                            }}
+                        />
+                    </Box>
                 </Grid>
             </Grid>
         </>
     );
 }
 
-export default List as any;
+export default connect<IProps>(List);

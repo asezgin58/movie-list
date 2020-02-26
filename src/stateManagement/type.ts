@@ -3,5 +3,5 @@ export interface IStore {
 }
 
 export const IStoreStateDefaultValue: IStore = {
-    movies: {}
+    movies: null
 };

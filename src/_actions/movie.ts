@@ -1,24 +1,12 @@
-import {getAuthApiBaseUrl} from "../_helpers";
-
-const urlBase = () => getAuthApiBaseUrl();
+import {getApiBaseUrl} from "../_helpers";
+const urlBase = () => getApiBaseUrl();
 
 export const getAllMovie = async () => {
 
-    let respResult: any = '';
-
     const url: string = String(new URL(`${urlBase()}`));
 
-    await fetch(url)
-        .then(res => res.json())
-        .then(
-            (result) => {
+    const fetchOpt:any = await fetch(url);
+    const result:any = await fetchOpt.json();
 
-                respResult = result;
-            },
-            (error) => {
-                console.log("Error : ", error);
-            }
-        );
-
-    return await respResult;
+    return await result;
 };
