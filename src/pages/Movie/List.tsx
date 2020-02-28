@@ -1,71 +1,82 @@
 import React, {useEffect, useState} from 'react';
-import {Box, Grid, Paper} from "@material-ui/core";
+import {Box, Grid} from "@material-ui/core";
 import connect from "../../stateManagement/connect";
 import {IListState, IListStateDefaultValue, IProps} from "./type";
 import MUIDataTable from "mui-datatables";
 import {getAllMovie} from "../../_actions/movie";
+import Filter from './Filter';
 
 const List = (props: IProps) => {
 
     const {moviesData, setMovies} = props;
     const [state, setState] = useState<IListState>(IListStateDefaultValue);
 
-    const {movies, count} = state;
+    const {movieList, count, page} = state;
 
     const getMovies = async () => {
-        const moviesData: any = await getAllMovie();
-        setMovies(moviesData)
+        const respMoviesData: any = await getAllMovie(page);
+        setMovies(respMoviesData)
     };
 
     useEffect(() => {
         getMovies();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [page]);
 
 
     useEffect(() => {
-        setState((prevState: IListState) => ({
-            ...prevState,
-            ...moviesData,
-            count: [moviesData].length
-        }))
+        if (moviesData) {
+            setState((prevState: IListState) => ({
+                ...prevState,
+                movieList: moviesData.results,
+                count: moviesData.total_results
+            }))
+        }
     }, [moviesData]);
 
-
-    console.log("State", state);
+    console.log("--moviesData", moviesData);
+    console.log("--count", count);
 
     return (
         <>
-            <Grid container spacing={2}>
+            <Grid container spacing={1}>
                 <Grid item xs={2}>
-                    <Paper className={"paper"}>Filter Area</Paper>
+                    <Filter/>
                 </Grid>
                 <Grid item xs={10}>
                     <Box>
                         <MUIDataTable
                             title={"Movie List"}
-                            data={[movies]}
+                            data={movieList}
                             columns={[
                                 {
-                                    name: "Title",
+                                    name: "title",
                                     label: "Title",
                                 },
                                 {
-                                    name: "Year",
+                                    name: "release_date",
                                     label: "Year",
                                 },
                                 {
-                                    name: "Genre",
-                                    label: "Genre",
+                                    name: "vote_average",
+                                    label: "Vote Average",
                                 },
                             ]}
                             options={{
+                                serverSide: true,
                                 selectableRows: 'none',
                                 filter: false,
                                 search: false,
                                 print: false,
                                 download: false,
-                                count: count
+                                count: count,
+                                rowsPerPage: 20,
+                                onChangePage: (e: number) => {
+                                    setState((prevState: IListState) => ({
+                                        ...prevState,
+                                        page: e + 1
+                                    }))
+                                }
                             }}
                         />
                     </Box>

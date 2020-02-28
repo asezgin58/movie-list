@@ -7,7 +7,7 @@ export default <P extends object>(Component: React.ComponentType<P>) =>
         return (
             <Component
                 {...(props as P)}
-                moviesData={storeData}
+                moviesData={storeData.movies}
                 setMovies={setStore}
             />
         );

@@ -1,14 +1,27 @@
 export interface IListState {
-    movies: any,
-    count: number
+    movieList: any,
+    count: number,
+    page: number,
 }
 
 export const IListStateDefaultValue: IListState = {
-    movies: {},
-    count: 0
+    movieList: [],
+    count: 0,
+    page: 1
 };
 
 export interface IProps {
     moviesData: any,
-    setMovies: (data:any) => void
+    setMovies: (data: any) => void
 }
+
+export interface IFilterProps {
+}
+
+export interface IFilterState {
+    inputText: string
+}
+
+export const IFilterStateDefaultValue: IFilterState = {
+    inputText: ''
+};

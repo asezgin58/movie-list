@@ -6,7 +6,8 @@ const StoreProvider = (props: any) => {
 
     const [store, setStore] = useState<IStore>(IStoreStateDefaultValue);
 
-    const setStoreData = (data:any) => {
+    const setStoreData = (data: any) => {
+
         setStore(prevState => ({
             ...prevState,
             movies: {
@@ -20,7 +21,7 @@ const StoreProvider = (props: any) => {
         <>
             <context.Provider value={{
                 storeData: store,
-                setStore: (data:any) => setStoreData(data)
+                setStore: (data: any) => setStoreData(data)
             }}>
                 {props.children}
             </context.Provider>
