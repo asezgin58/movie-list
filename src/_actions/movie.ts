@@ -13,9 +13,9 @@ export const getAllMovie = async (page: number) => {
     return await result;
 };
 
-export const getFilterMovie = async (searchTitle: string, year: number) => {
+export const getFilterMovie = async (searchTitle: string, year: number, releaseYear: number) => {
 
-    let urlSuffix: string = `${searchTitle.length ? `&query=${searchTitle}` : ''}${year !== 0 ? `&year=${year}` : ''}`;
+    let urlSuffix: string = `${searchTitle.length ? `&query=${searchTitle}` : ''}${year !== 0 ? `&year=${year}` : ''}${releaseYear !== 0 ? `&primary_release_year=${releaseYear}` : ''}`;
 
     const url: string = String(new URL(`${searchUrlBase()}${urlSuffix}`));
 

@@ -21,10 +21,12 @@ export interface IFilterProps {
 export interface IFilterState {
     inputText: string,
     yearCheck?: boolean
-    year: number
+    year: number,
+    releaseYear: number
 }
 
 export const IFilterStateDefaultValue: IFilterState = {
     inputText: '',
-    year: 0
+    year: 0,
+    releaseYear: 0
 };

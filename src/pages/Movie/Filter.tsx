@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Box, Checkbox, FormControlLabel, Paper, TextField, Typography} from "@material-ui/core";
+import {Box, Checkbox, FormControl, FormControlLabel, FormLabel, Paper, Radio, RadioGroup, TextField, Typography} from "@material-ui/core";
 import connect from "../../stateManagement/connect";
 import {IFilterState, IFilterStateDefaultValue} from "./type";
 import {getAllMovie, getFilterMovie} from "../../_actions/movie";
@@ -11,13 +11,14 @@ const Filter = (props: any) => {
     const {
         inputText,
         yearCheck,
-        year
+        year,
+        releaseYear
     } = state;
 
     const {setMovies} = props;
 
     const filterMovies = async () => {
-        const respMoviesData: any = inputText.length ? await getFilterMovie(inputText, year) : await getAllMovie(1);
+        const respMoviesData: any = inputText.length ? await getFilterMovie(inputText, year, releaseYear) : await getAllMovie(1);
 
         setMovies(respMoviesData);
     };
@@ -25,7 +26,7 @@ const Filter = (props: any) => {
     useEffect(() => {
         filterMovies();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [inputText, year]);
+    }, [inputText, year, releaseYear]);
 
     const handleChange = (e: any) => {
         e.persist();
@@ -36,8 +37,6 @@ const Filter = (props: any) => {
             yearCheck: !e.target.value.length ? false : prevState.yearCheck
         }));
     };
-
-    console.log("---Filterstate", state);
 
     return (
         <>
@@ -56,26 +55,48 @@ const Filter = (props: any) => {
                         required
                     />
                 </Box>
+                <Box marginY={2}>
+                    <FormControl>
+                        <FormLabel>Year</FormLabel>
+                        <FormControlLabel
+                            control={
+                                <Checkbox
+                                    name={'year'}
+                                    checked={yearCheck || false}
+                                    onChange={(e: any) => {
+                                        setState((prevState: any) => ({
+                                            ...prevState,
+                                            yearCheck: !yearCheck,
+                                            year: !yearCheck === false ? 0 : e.target.value,
+                                            releaseYear: !yearCheck === true ? 0 : prevState.releaseYear
+                                        }))
+                                    }}
+                                    value={2019}
+                                    color="primary"
+                                />
+                            }
+                            label="2019"
+                            disabled={!inputText.length}
+                        />
+                    </FormControl>
+                </Box>
                 <Box>
-                    <FormControlLabel
-                        control={
-                            <Checkbox
-                                name={'year'}
-                                checked={yearCheck || false}
-                                onChange={(e: any) => {
-                                    setState((prevState: any) => ({
-                                        ...prevState,
-                                        yearCheck: !yearCheck,
-                                        year: !yearCheck === false ? 0 : e.target.value
-                                    }))
-                                }}
-                                value={2019}
-                                color="primary"
-                            />
-                        }
-                        label="2019"
-                        disabled={!inputText.length}
-                    />
+                    <FormControl>
+                        <FormLabel component="legend">Release Year</FormLabel>
+                        <RadioGroup
+                            aria-label="releaseYear"
+                            name="releaseYear"
+                            value={releaseYear}
+                            onChange={(e: any) => {
+                                setState((prevState: any) => ({
+                                    ...prevState,
+                                    releaseYear: yearCheck ? 0 : parseInt(e.target.value)
+                                }))
+                            }}>
+                            <FormControlLabel value={0} control={<Radio/>} label="Show All Movie" disabled={!inputText.length || yearCheck}/>
+                            <FormControlLabel value={2021} control={<Radio/>} label="2021" disabled={!inputText.length || yearCheck}/>
+                        </RadioGroup>
+                    </FormControl>
                 </Box>
             </Paper>
         </>

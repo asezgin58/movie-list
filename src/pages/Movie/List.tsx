@@ -34,9 +34,6 @@ const List = (props: IProps) => {
         }
     }, [moviesData]);
 
-    // console.log("--moviesData", moviesData);
-    console.log("--count", count);
-
     return (
         <>
             <Grid container spacing={1}>
@@ -66,6 +63,7 @@ const List = (props: IProps) => {
                                 serverSide: true,
                                 selectableRows: 'none',
                                 filter: false,
+                                sort: false,
                                 search: false,
                                 print: false,
                                 download: false,
