@@ -19,9 +19,12 @@ export interface IFilterProps {
 }
 
 export interface IFilterState {
-    inputText: string
+    inputText: string,
+    yearCheck?: boolean
+    year: number
 }
 
 export const IFilterStateDefaultValue: IFilterState = {
-    inputText: ''
+    inputText: '',
+    year: 0
 };

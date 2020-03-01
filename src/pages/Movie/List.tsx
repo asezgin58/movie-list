@@ -34,7 +34,7 @@ const List = (props: IProps) => {
         }
     }, [moviesData]);
 
-    console.log("--moviesData", moviesData);
+    // console.log("--moviesData", moviesData);
     console.log("--count", count);
 
     return (
